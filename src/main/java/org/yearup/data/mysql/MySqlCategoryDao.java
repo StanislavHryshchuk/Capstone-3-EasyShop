@@ -5,10 +5,7 @@ import org.yearup.data.CategoryDao;
 import org.yearup.models.Category;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,23 +37,65 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     }
 
     @Override
-    public Category getById(int categoryId)
-    {
-        // get category by id
-        return null;
+    public Category getById(int categoryId) {
+        Category category = null;
+        String query = "SELECT * FROM category \n" +
+                "WHERE category_id = ?;";
+        try(
+                Connection connection = getConnection();
+                PreparedStatement ps = connection.prepareStatement(query);
+        ) {
+            ps.setInt(1,categoryId);
+
+            try(ResultSet resultSet = ps.executeQuery()) {
+                while(resultSet.next()) {
+                    category = mapRow(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return  category;
     }
 
     @Override
-    public Category create(Category category)
-    {
-        // create a new category
-        return null;
+    public Category create(Category category) {
+        String query = "INSERT INTO categories (name, description) VALUES (?,?);\n";
+        try(
+                Connection connection = getConnection();
+                PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+        ) {
+            ps.setString(1, category.getName());
+            ps.setString(2,category.getDescription());
+            ps.executeUpdate();
+            try (ResultSet resultSet = ps.getGeneratedKeys()){
+                resultSet.next();
+                category.setCategoryId(resultSet.getInt(1));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return category;
     }
 
     @Override
     public void update(int categoryId, Category category)
     {
-        // update category
+        String query = "UPDATE category SET name = ? \n" +
+                "WHERE category_id = ?;";
+        try(
+                Connection connection = getConnection();
+                PreparedStatement ps = connection.prepareStatement(query);
+        ){
+            ps.setString(1, category.getName());
+            ps.setInt(2, categoryId);
+            ps.executeUpdate();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
