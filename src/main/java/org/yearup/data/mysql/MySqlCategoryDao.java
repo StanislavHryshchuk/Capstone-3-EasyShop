@@ -95,13 +95,23 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         }catch (SQLException e){
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void delete(int categoryId)
     {
-        // delete category
+        String query = "DELETE FROM category \n" +
+                "WHERE category_id = ?;";
+        try(
+                Connection connection = getConnection();
+                PreparedStatement ps = connection.prepareStatement(query);
+        ) {
+            ps.setInt(1,categoryId);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private Category mapRow(ResultSet row) throws SQLException
