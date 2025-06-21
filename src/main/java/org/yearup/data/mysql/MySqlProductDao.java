@@ -102,7 +102,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
     }
 
     @Override
-    public Product create(Product product) {
+    public Product create(Product product){
 
         String sql = "INSERT INTO products(name, price, category_id, description, color, image_url, stock, featured) " +
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";

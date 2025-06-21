@@ -1,6 +1,7 @@
 package org.yearup.controllers;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 import org.yearup.data.ProductDao;
 import org.yearup.data.ShoppingCartDao;
@@ -12,6 +13,7 @@ import java.security.Principal;
 
 // convert this class to a REST controller
 // only logged in users should have access to these actions
+@Component
 public class ShoppingCartController {
     // a shopping cart requires
     private ShoppingCartDao shoppingCartDao;
@@ -28,7 +30,7 @@ public class ShoppingCartController {
             User user = userDao.getByUserName(userName);
             int userId = user.getId();
 
-            // use the shoppingcartDao to get all items in the cart and return the cart
+            // use the shoppingCartDao to get all items in the cart and return the cart
             return null;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
