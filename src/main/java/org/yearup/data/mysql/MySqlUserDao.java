@@ -5,7 +5,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.yearup.data.UserDao;
 import org.yearup.models.User;
-
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao {
     public MySqlUserDao(DataSource dataSource) {
         super(dataSource);
     }
-
 
     @Override
     public User create(User newUser) {
@@ -59,7 +57,6 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         return users;
     }
 
@@ -101,7 +98,6 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao {
         } catch (SQLException e) {
             System.out.println(e);
         }
-
         return null;
     }
 
