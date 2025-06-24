@@ -8,6 +8,6 @@ import java.util.List;
 public interface ProfileDao {
     Profile create(Profile profile);
     Profile getProfile(int userId);
-    Profile updateProfile(Profile profile);
+    Profile updateProfile(int userId, Profile profile);
 
 }

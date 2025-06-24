@@ -30,23 +30,43 @@ public class ProfileController {
     }
 
     @GetMapping("profile")
-    public Profile getProfile(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName;
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof UserDetails){
-            userName = ((UserDetails) principal).getUsername();
-        }else {
-            userName = principal.toString();
+    public Profile getProfile(Principal principal){
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String userName;
+//        Object principal = authentication.getPrincipal();
+//        if (principal instanceof UserDetails){
+//            userName = ((UserDetails) principal).getUsername();
+//        }else {
+//            userName = principal.toString();
+//        }
+//        int userId = userDao.getIdByUsername(userName);
+        try{
+            String userName = principal.getName();
+            User user = userDao.getByUserName(userName);
+            int userId = user.getId();
+
+            return profileDao.getProfile(userId);
+        } catch (Exception e) {
+            if (principal == null){
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            }
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
-        int userId = userDao.getIdByUsername(userName);
-
-        return profileDao.getProfile(userId);
-
     }
 
     @PutMapping("profile")
-    public Profile updateProfile(@RequestBody Profile profile){
-        return profileDao.updateProfile(profile);
+    public Profile updateProfile(Principal principal, @RequestBody Profile profile){
+        try{
+            String userName = principal.getName();
+            User user = userDao.getByUserName(userName);
+            int userId = user.getId();
+
+            return profileDao.updateProfile(userId,profile);
+        } catch (Exception e) {
+            if (principal == null){
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            }
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 }

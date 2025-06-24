@@ -68,7 +68,7 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
     }
 
     @Override
-    public Profile updateProfile(Profile profile){
+    public Profile updateProfile(int userId, Profile profile){
         String sql = "UPDATE profiles" +
                 " SET first_name = ? " +
                 "   , last_name = ? " +
@@ -82,6 +82,7 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
 
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
+
             statement.setString(1, profile.getFirstName());
             statement.setString(2, profile.getLastName());
             statement.setString(3, profile.getPhone());
@@ -90,7 +91,7 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
             statement.setString(6, profile.getCity());
             statement.setString(7, profile.getState());
             statement.setString(8, profile.getZip());
-            statement.setInt(9, profile.getUserId());
+            statement.setInt(9, userId);
 
             statement.executeUpdate();
         } catch (SQLException e) {
