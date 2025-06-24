@@ -7,6 +7,7 @@ import org.yearup.models.Profile;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
@@ -40,4 +41,41 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
         }
     }
 
+    @Override
+    public Profile getByUserId(int userId){
+        Profile profile = null;
+        String query = """
+                SELECT * FROM profiles
+                WHERE user_id = ?;
+                """;
+        try(
+                Connection connection = getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)
+                ){
+            ps.setInt(1,userId);
+            try(ResultSet resultSet = ps.executeQuery()){
+                profile = mapRow(resultSet);
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return profile;
+    }
+
+    @
+
+    private Profile mapRow (ResultSet row) throws SQLException {
+        Profile profile = new Profile(
+                row.getInt("user_id"),
+                row.getString("first_name"),
+                row.getString("last_name"),
+                row.getString("phone"),
+                row.getString("email"),
+                row.getString("address"),
+                row.getString("city"),
+                row.getString("state"),
+                row.getString("zip")
+        );
+        return profile;
+    }
 }

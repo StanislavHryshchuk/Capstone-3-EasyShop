@@ -48,7 +48,6 @@ public class CategoriesController {
         } else {
             return c;
         }
-
     }
 
     // the url to return all products in category 1 would look like this
@@ -73,9 +72,9 @@ public class CategoriesController {
     // add annotation to ensure that only an ADMIN can call this function
     @PutMapping("categories/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void updateCategory(@PathVariable int id, @RequestBody Category category) {
+    public Category updateCategory(@PathVariable int id, @RequestBody Category category) {
         // update the category by id
-        categoryDao.update(id, category);
+        return categoryDao.update(id, category);
     }
 
 

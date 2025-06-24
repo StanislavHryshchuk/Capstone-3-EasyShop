@@ -46,7 +46,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
             ps.setInt(1, categoryId);
 
             try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
+                if (resultSet.next()) {
                     category = mapRow(resultSet);
                 }
             }
@@ -78,7 +78,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
     }
 
     @Override
-    public void update(int categoryId, Category category) {
+    public Category update(int categoryId, Category category) {
         String query = "UPDATE categories SET name = ? \n" +
                 "WHERE category_id = ?;";
         try (
@@ -92,6 +92,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return category;
     }
 
     @Override
