@@ -7,8 +7,7 @@ import java.util.List;
 
 public interface ProfileDao {
     Profile create(Profile profile);
-    List<Profile> getAll();
-    Profile getByUserId(int userId);
+    Profile getProfile(int userId);
     Profile updateProfile(Profile profile);
 
 }

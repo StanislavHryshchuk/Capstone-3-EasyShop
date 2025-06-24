@@ -105,7 +105,6 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
         ) {
             ps.setInt(1, categoryId);
             ps.executeUpdate();
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -121,7 +120,6 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
             setName(name);
             setDescription(description);
         }};
-
         return category;
     }
 
