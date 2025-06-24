@@ -54,7 +54,10 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
                 ){
             ps.setInt(1,userId);
             try(ResultSet resultSet = ps.executeQuery()){
-                profile = mapRow(resultSet);
+               if(resultSet.next()){
+                   profile = mapRow(resultSet);
+               }
+
             }
         }catch (SQLException e){
             System.out.println(e.getMessage());
@@ -62,7 +65,37 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
         return profile;
     }
 
-    @
+    @Override
+    public Profile updateProfile(Profile profile){
+        String sql = "UPDATE profiles" +
+                " SET first_name = ? " +
+                "   , last_name = ? " +
+                "   , phone = ? " +
+                "   , email = ? " +
+                "   , address = ? " +
+                "   , city = ? " +
+                "   , state = ? " +
+                "   , zip = ? " +
+                " WHERE user_id = ?;";
+
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, profile.getFirstName());
+            statement.setString(2, profile.getLastName());
+            statement.setString(3, profile.getPhone());
+            statement.setString(4, profile.getEmail());
+            statement.setString(5, profile.getAddress());
+            statement.setString(6, profile.getCity());
+            statement.setString(7, profile.getState());
+            statement.setString(8, profile.getZip());
+            statement.setInt(9, profile.getUserId());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return profile;
+    }
 
     private Profile mapRow (ResultSet row) throws SQLException {
         Profile profile = new Profile(
