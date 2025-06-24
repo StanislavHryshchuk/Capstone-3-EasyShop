@@ -49,26 +49,7 @@ public class ShoppingCartController {
 
     // add a POST method to add a product to the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
-//    @PostMapping("cart/products/{productId}")
-//    public void updateQuantity(Principal principal, @PathVariable int productId) {
-//        try {
-//            // get the currently logged in username
-//            String userName = principal.getName();
-//            // find database user by userId
-//            User user = userDao.getByUserName(userName);
-//            int userId = user.getId();
-//
-//
-//            shoppingCartDao.updateQuantity(userId,productId,1);
-//        } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
-//        }
-//    }
-
-    // add a PUT method to update an existing product in the cart - the url should be
-    // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
-    // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
-    @PutMapping("cart/products/{productId}")
+    @PostMapping("cart/products/{productId}")
     public void addItem(Principal principal, @PathVariable int productId) {
         try {
             // get the currently logged in username
@@ -77,8 +58,27 @@ public class ShoppingCartController {
             User user = userDao.getByUserName(userName);
             int userId = user.getId();
 
+
+            shoppingCartDao.addItem(userId,productId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+    }
+
+    // add a PUT method to update an existing product in the cart - the url should be
+    // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
+    // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
+    @PutMapping("cart/products/{productId}")
+    public void updateQuantity(Principal principal, @PathVariable int productId) {
+        try {
+            // get the currently logged in username
+            String userName = principal.getName();
+            // find database user by userId
+            User user = userDao.getByUserName(userName);
+            int userId = user.getId();
+
             // use the shoppingCartDao to get all items in the cart and return the cart
-            shoppingCartDao.addItem(userId,productId,1);
+            shoppingCartDao.updateQuantity(userId,productId,1);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }

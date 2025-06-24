@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import org.yearup.data.ProfileDao;
 import org.yearup.models.Profile;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 public class ProfileController {
@@ -15,12 +17,17 @@ public class ProfileController {
         this.profileDao = profileDao;
     }
 
-    @GetMapping("profiles/{id}")
+    @GetMapping("profile")
+    public List<Profile> getProfileById(){
+        return profileDao.getAll();
+    }
+
+    @GetMapping("profile/{id}")
     public Profile getProfileById(@PathVariable int id){
         return profileDao.getByUserId(id);
     }
 
-    @PutMapping("/profiles")
+    @PutMapping("/profile")
     public Profile updateProfile(@RequestBody Profile profile){
         return profileDao.updateProfile(profile);
     }

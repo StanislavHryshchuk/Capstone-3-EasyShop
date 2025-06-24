@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
@@ -39,6 +41,25 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<Profile> getAll(){
+       List<Profile> profileList = new ArrayList<>();
+        String query = "SELECT * FROM profiles;";
+        try(
+                Connection connection = getConnection();
+                PreparedStatement ps = connection.prepareStatement(query);
+                ResultSet resultSet = ps.executeQuery()
+            )
+        {
+            while(resultSet.next()){
+                profileList.add(mapRow(resultSet));
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return profileList;
     }
 
     @Override
