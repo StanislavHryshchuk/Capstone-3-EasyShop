@@ -111,8 +111,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
                 row.getString("image_url"));
 
         ShoppingCartItem shoppingCartItem = new ShoppingCartItem(
-                product,
-                row.getInt("quantity"));
+                product,row.getInt("quantity"));
 
         shoppingCart.add(shoppingCartItem);
         return shoppingCart;
