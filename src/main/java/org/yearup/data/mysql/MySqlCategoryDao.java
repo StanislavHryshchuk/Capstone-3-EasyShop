@@ -57,7 +57,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
 
     @Override
     public Category create(Category category) {
-        String query = "INSERT INTO categories (name, description) VALUES (?,?);\n";
+        String query = "INSERT INTO categories (name, description) VALUES (?,?);";
         try (
                 Connection connection = getConnection();
                 PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
